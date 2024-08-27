@@ -6,7 +6,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { Menu, ScrollText, Undo2 } from "lucide-react";
+import { Menu, ScrollText, Undo2, User2Icon } from "lucide-react";
 import Link from "next/link";
 import { ReactNode } from "react";
 
@@ -37,6 +37,14 @@ export default async function DashboardNavbar({
                   <Button variant="outline" className="w-full">
                     <ScrollText className="mr-2 h-4 w-4" />
                     Report
+                  </Button>
+                </Link>
+              </DialogClose>
+              <DialogClose asChild>
+                <Link href="/dashboard/employee">
+                  <Button variant="outline" className="w-full">
+                    <User2Icon className="mr-2 h-4 w-4" />
+                    Employee/Marketing
                   </Button>
                 </Link>
               </DialogClose>

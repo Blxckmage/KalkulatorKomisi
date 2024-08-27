@@ -6,6 +6,7 @@ export const JobSchema = z.object({
 	period_job: z.date(),
 	amount: z.coerce.number().min(0),
 	gross_profit: z.coerce.number().min(0),
+	commission: z.coerce.number().min(0),
 	employee: EmployeeSchema,
 	employeeId: z.number().optional(),
 });

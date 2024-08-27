@@ -27,33 +27,56 @@ import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { Calendar } from "./ui/calendar";
 import { useEffect, useState } from "react";
+import { createJob } from "@/hooks/Job";
+import { Employee } from "@/types/employee.types";
 
-const Calculator = () => {
+const Calculator = ({ employees }: { employees: Employee[] }) => {
   const [commission, setCommission] = useState(0);
+  const [employeeId, setEmployeeId] = useState<number | null>(null);
   const form = useForm<Job>({
     resolver: zodResolver(JobSchema),
     defaultValues: {
-      employee: {
-        id: 1,
-      },
+      commission: commission,
     },
   });
-  console.log(form.formState.errors);
 
   useEffect(() => {
     const subscription = form.watch((values, { name }) => {
       if (name === "gross_profit") {
         const grossProfit = values.gross_profit;
-        const calculatedCommission = grossProfit || 0 * 0.1;
-        setCommission(Math.round(calculatedCommission * 100) / 100);
+        const calculatedCommission = (grossProfit || 0) * 0.1;
+        setCommission(calculatedCommission);
+      }
+
+      if (name === "employee.name") {
+        const employee = employees.find(
+          (employee) => employee.name === values.employee?.name,
+        );
+        if (employee) {
+          setEmployeeId(employee.id as number);
+        }
       }
 
       return () => subscription.unsubscribe();
     });
   }, [form.watch]);
 
-  function onSubmit(values: Job) {
-    console.log(values);
+  async function onSubmit(values: Job) {
+    try {
+      const newValues = {
+        ...values,
+        employeeId: employeeId as number,
+        commission: commission as number,
+      };
+      const response = await createJob(newValues);
+
+      if (response) {
+        console.log("Job created successfully");
+        window.location.reload();
+      }
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   return (
@@ -80,9 +103,11 @@ const Calculator = () => {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value="john-doe">John Doe</SelectItem>
-                      <SelectItem value="jane-doe">Jane Doe</SelectItem>
-                      <SelectItem value="joe-doe">Joe Doe</SelectItem>
+                      {employees.map((employee) => (
+                        <SelectItem key={employee.id} value={employee.name}>
+                          {employee.name}
+                        </SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
                 </FormItem>
@@ -179,7 +204,9 @@ const Calculator = () => {
                 )}
               </div>
             </div>
-            <Button className="w-full">Tambahkan Job</Button>
+            <Button className="w-full" type="submit">
+              Tambahkan Job
+            </Button>
           </CardFooter>
         </form>
       </Form>

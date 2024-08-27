@@ -19,6 +19,7 @@ model Job {
   period_job   DateTime
   amount       Int
   gross_profit Int
+  commission   Int
   employee     Employee @relation(fields: [employeeId], references: [id])
   employeeId   Int
 }

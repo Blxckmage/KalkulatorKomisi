@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { ScrollText } from "lucide-react";
+import { ScrollText, User2Icon } from "lucide-react";
 import Link from "next/link";
 
 export default async function DashboardSideBar() {
@@ -20,12 +20,23 @@ export default async function DashboardSideBar() {
               className={clsx(
                 "flex items-center gap-2 rounded-lg px-3 py-2 text-gray-500 transition-all hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50",
               )}
-              href="/"
+              href="/dashboard"
             >
               <div className="border rounded-lg dark:bg-black dark:border-gray-800 border-gray-400 p-1 bg-white">
                 <ScrollText className="h-3 w-3" />
               </div>
               Report
+            </Link>
+            <Link
+              className={clsx(
+                "flex items-center gap-2 rounded-lg px-3 py-2 text-gray-500 transition-all hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50",
+              )}
+              href="/dashboard/employee"
+            >
+              <div className="border rounded-lg dark:bg-black dark:border-gray-800 border-gray-400 p-1 bg-white">
+                <User2Icon className="h-3 w-3" />
+              </div>
+              Employee/Marketing
             </Link>
           </nav>
         </div>
