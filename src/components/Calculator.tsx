@@ -198,7 +198,12 @@ const Calculator = ({ employees }: { employees: Employee[] }) => {
               <div className="flex justify-between font-bold">
                 <span>Total Komisi</span>
                 {commission ? (
-                  <span>Rp. {commission}</span>
+                  <span>
+                    {commission.toLocaleString("id-ID", {
+                      style: "currency",
+                      currency: "IDR",
+                    })}
+                  </span>
                 ) : (
                   <span>Rp. 0</span>
                 )}
